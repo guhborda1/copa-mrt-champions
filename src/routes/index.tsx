@@ -165,7 +165,14 @@ function Index() {
     <div className="min-h-screen">
       {/* Top nav */}
       <header className="max-w-7xl mx-auto px-5 md:px-8 pt-6 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <img
+            src="/__l5e/assets-v1/7743b808-b5d9-4bcf-b495-88515942c774/logo-mrt.png"
+            alt="Logo MRT"
+            width={40}
+            height={40}
+            className="h-9 w-9 md:h-10 md:w-10 rounded-full object-contain bg-white/90 shadow-sm"
+          />
           <Sparkles className="h-5 w-5" style={{ color: "var(--gold)" }} />
           <span className="font-display tracking-widest text-sm">COPA MRT 2026</span>
         </div>
