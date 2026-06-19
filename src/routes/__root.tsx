@@ -118,7 +118,7 @@ function RootComponent() {
         className="fixed inset-0 -z-20"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.16 0.08 152 / 0.78) 0%, oklch(0.14 0.08 152 / 0.86) 50%, oklch(0.18 0.10 150 / 0.92) 100%)",
+            "linear-gradient(180deg, oklch(0.16 0.08 152 / 0.42) 0%, oklch(0.14 0.08 152 / 0.52) 50%, oklch(0.18 0.10 150 / 0.62) 100%)",
         }}
       />
       <div
@@ -126,7 +126,7 @@ function RootComponent() {
         className="fixed inset-0 -z-10 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 45% at 50% 0%, oklch(0.88 0.18 95 / 28%) 0%, transparent 60%)",
+            "radial-gradient(ellipse 70% 45% at 50% 0%, oklch(0.88 0.18 95 / 40%) 0%, transparent 60%)",
         }}
       />
       <Outlet />
