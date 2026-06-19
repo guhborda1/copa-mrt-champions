@@ -40,48 +40,53 @@
 :root {
   --radius: 0.875rem;
 
-  /* Deep graphite / pitch base */
-  --background: oklch(0.16 0.015 200);
-  --foreground: oklch(0.97 0.005 90);
+  /* Vibrant stadium — verde escuro com explosão amarela */
+  --background: oklch(0.20 0.09 152);
+  --foreground: oklch(0.98 0.01 95);
 
-  --card: oklch(0.20 0.018 195);
-  --card-foreground: oklch(0.97 0.005 90);
+  --card: oklch(0.24 0.08 150);
+  --card-foreground: oklch(0.98 0.01 95);
 
-  --popover: oklch(0.20 0.018 195);
-  --popover-foreground: oklch(0.97 0.005 90);
+  --popover: oklch(0.24 0.08 150);
+  --popover-foreground: oklch(0.98 0.01 95);
 
-  --primary: oklch(0.82 0.14 85);            /* gold */
-  --primary-foreground: oklch(0.18 0.02 200);
+  --primary: oklch(0.88 0.18 95);            /* gold/amarelo torcida */
+  --primary-foreground: oklch(0.20 0.08 150);
 
-  --secondary: oklch(0.26 0.025 190);
-  --secondary-foreground: oklch(0.97 0.005 90);
+  --secondary: oklch(0.30 0.09 150);
+  --secondary-foreground: oklch(0.98 0.01 95);
 
-  --muted: oklch(0.24 0.02 195);
-  --muted-foreground: oklch(0.72 0.015 90);
+  --muted: oklch(0.28 0.07 150);
+  --muted-foreground: oklch(0.85 0.04 100);
 
-  --accent: oklch(0.30 0.05 155);
-  --accent-foreground: oklch(0.97 0.005 90);
+  --accent: oklch(0.55 0.18 145);
+  --accent-foreground: oklch(0.98 0.01 95);
 
   --destructive: oklch(0.62 0.22 28);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.30 0.02 195 / 60%);
-  --input: oklch(0.28 0.02 195);
-  --ring: oklch(0.82 0.14 85);
+  --border: oklch(0.88 0.18 95 / 22%);
+  --input: oklch(0.30 0.07 150);
+  --ring: oklch(0.88 0.18 95);
 
-  --gold: oklch(0.82 0.14 85);
-  --gold-soft: oklch(0.90 0.08 90);
-  --silver: oklch(0.85 0.005 250);
-  --bronze: oklch(0.65 0.13 50);
-  --pitch: oklch(0.22 0.06 150);
+  --gold: oklch(0.88 0.18 95);
+  --gold-soft: oklch(0.94 0.12 100);
+  --silver: oklch(0.90 0.01 250);
+  --bronze: oklch(0.68 0.15 50);
+  --pitch: oklch(0.42 0.16 145);
 
-  --gradient-gold: linear-gradient(135deg, oklch(0.90 0.08 90), oklch(0.78 0.16 80));
-  --gradient-pitch: radial-gradient(ellipse at 50% 0%, oklch(0.26 0.07 155) 0%, oklch(0.14 0.02 200) 60%);
-  --gradient-stadium: radial-gradient(ellipse at 50% -20%, oklch(0.45 0.10 150 / 50%) 0%, transparent 60%),
-    linear-gradient(180deg, oklch(0.18 0.018 200) 0%, oklch(0.13 0.015 200) 100%);
-  --shadow-gold: 0 10px 40px -10px oklch(0.82 0.14 85 / 35%);
-  --shadow-elegant: 0 30px 80px -30px oklch(0 0 0 / 60%);
-  --glow-gold: 0 0 60px oklch(0.82 0.14 85 / 20%);
+  --gradient-gold: linear-gradient(135deg, oklch(0.95 0.13 100), oklch(0.82 0.20 90));
+  --gradient-pitch: radial-gradient(ellipse at 50% 0%, oklch(0.42 0.16 145) 0%, oklch(0.18 0.08 152) 70%);
+  /* Estádio vibrando: holofotes amarelos no topo, gramado verde explodindo embaixo */
+  --gradient-stadium:
+    radial-gradient(ellipse 80% 50% at 50% -10%, oklch(0.88 0.18 95 / 35%) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 15% 25%, oklch(0.70 0.22 130 / 22%) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85% 25%, oklch(0.88 0.18 95 / 22%) 0%, transparent 60%),
+    radial-gradient(ellipse 120% 70% at 50% 110%, oklch(0.55 0.20 145) 0%, transparent 70%),
+    linear-gradient(180deg, oklch(0.22 0.10 152) 0%, oklch(0.16 0.08 152) 55%, oklch(0.30 0.14 148) 100%);
+  --shadow-gold: 0 14px 50px -10px oklch(0.88 0.18 95 / 45%);
+  --shadow-elegant: 0 30px 80px -30px oklch(0 0 0 / 70%);
+  --glow-gold: 0 0 80px oklch(0.88 0.18 95 / 30%);
 }
 
 @layer base {
@@ -114,10 +119,10 @@
   color: transparent;
 }
 @utility card-premium {
-  background: linear-gradient(180deg, oklch(0.22 0.02 195 / 90%), oklch(0.18 0.018 200 / 90%));
-  border: 1px solid oklch(0.82 0.14 85 / 15%);
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-elegant);
+  background: linear-gradient(180deg, oklch(0.26 0.09 150 / 88%), oklch(0.20 0.08 152 / 92%));
+  border: 1px solid oklch(0.88 0.18 95 / 22%);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-elegant), inset 0 1px 0 oklch(0.88 0.18 95 / 10%);
 }
 @utility btn-gold {
   background: var(--gradient-gold);

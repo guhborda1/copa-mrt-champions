@@ -243,13 +243,13 @@ function Admin() {
         <PrizeEditor password={password} />
         <div className="grid gap-6 md:grid-cols-2">
           <Editor
-            label="🏆 Franquias"
+            label="🏆 Seleções MRT"
             rows={franchises}
             onSave={(r) => upF({ data: { password, ...r } }).then(() => undefined)}
             onDelete={(id) => delF({ data: { password, id } }).then(() => undefined)}
           />
           <Editor
-            label="⚽ Vendedores"
+            label="⚽ Artilheiros da Copa MRT"
             rows={sellers}
             onSave={(r) => upS({ data: { password, ...r } }).then(() => undefined)}
             onDelete={(id) => delS({ data: { password, id } }).then(() => undefined)}
