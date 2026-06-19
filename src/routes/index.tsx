@@ -192,10 +192,10 @@ function Index() {
           </div>
         </div>
 
-        <h1 className="mt-6 text-5xl md:text-7xl lg:text-8xl font-display gradient-text-gold leading-none">
+        <h1 className="mt-6 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display gradient-text-gold leading-none break-words">
           COPA MRT 2026
         </h1>
-        <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="mt-4 text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
           Cada venda vale pontos. Cada ponto aproxima da taça.
         </p>
 

@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import stadiumBg from "@/assets/stadium-bg.jpg";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -106,6 +107,28 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
+      {/* Estádio fixo de fundo + camadas para legibilidade */}
+      <div
+        aria-hidden
+        className="fixed inset-0 -z-30 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${stadiumBg})` }}
+      />
+      <div
+        aria-hidden
+        className="fixed inset-0 -z-20"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.16 0.08 152 / 0.78) 0%, oklch(0.14 0.08 152 / 0.86) 50%, oklch(0.18 0.10 150 / 0.92) 100%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="fixed inset-0 -z-10 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 45% at 50% 0%, oklch(0.88 0.18 95 / 28%) 0%, transparent 60%)",
+        }}
+      />
       <Outlet />
     </QueryClientProvider>
   );
