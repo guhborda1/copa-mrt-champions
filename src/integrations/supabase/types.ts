@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      campaign_info: {
+        Row: {
+          id: number
+          prize: string
+        }
+        Insert: {
+          id?: number
+          prize?: string
+        }
+        Update: {
+          id?: number
+          prize?: string
+        }
+        Relationships: []
+      }
+      franchises: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          points: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          points?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          points?: number
+        }
+        Relationships: []
+      }
+      sellers: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          points: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          points?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          points?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
