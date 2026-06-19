@@ -113,17 +113,17 @@ function RootComponent() {
         className="fixed inset-0 -z-40 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${stadiumBg})` }}
       />
-      {/* Gramado + luzes do estádio (camada animada) */}
-      <div aria-hidden className="fixed inset-0 -z-30 stadium-lights pointer-events-none" />
-      {/* Escurecimento legível */}
+      {/* Escurecimento legível (suave para deixar o estádio aparecer) */}
       <div
         aria-hidden
-        className="fixed inset-0 -z-20"
+        className="fixed inset-0 -z-30 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.14 0.08 152 / 0.55) 0%, oklch(0.12 0.07 152 / 0.62) 50%, oklch(0.18 0.10 150 / 0.72) 100%)",
+            "linear-gradient(180deg, oklch(0.14 0.08 152 / 0.32) 0%, oklch(0.12 0.07 152 / 0.40) 55%, oklch(0.18 0.10 150 / 0.55) 100%)",
         }}
       />
+      {/* Luzes do estádio (camada animada por cima da foto) */}
+      <div aria-hidden className="fixed inset-0 -z-20 stadium-lights pointer-events-none" />
       {/* Halo dourado no topo */}
       <div
         aria-hidden
