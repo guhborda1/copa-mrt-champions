@@ -8,7 +8,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Copa MRT 2026 — Painel da Competição" },
-      { name: "description", content: "Ranking em tempo real das franquias e vendedores do Grupo MRT. Cada venda é um gol." },
+      { name: "description", content: "Ranking em tempo real das Seleções MRT e dos Artilheiros da Copa MRT. Cada venda é um gol." },
     ],
   }),
   component: Index,
@@ -23,7 +23,7 @@ const QUOTES = [
   "Grandes campeões são construídos todos os dias.",
   "Na Copa MRT, cada ponto vale ouro.",
   "Seu time joga para vencer.",
-  "Toda venda aproxima sua franquia do título.",
+  "Toda venda aproxima sua seleção do título.",
 ];
 
 function useRanking(table: "franchises" | "sellers") {
@@ -123,7 +123,7 @@ function LeaderBar({ franchise, seller, prize }: { franchise?: Row; seller?: Row
       <div className="flex items-center gap-3">
         <span className="text-2xl">🥇</span>
         <div className="min-w-0">
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Franquia líder</div>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Seleção líder</div>
           <div className="font-display text-lg truncate">{franchise?.name ?? "—"}</div>
         </div>
         {franchise && <span className="ml-auto font-display gradient-text-gold text-xl">{franchise.points}</span>}
@@ -131,7 +131,7 @@ function LeaderBar({ franchise, seller, prize }: { franchise?: Row; seller?: Row
       <div className="flex items-center gap-3 md:border-l md:border-border md:pl-6">
         <span className="text-2xl">⚽</span>
         <div className="min-w-0">
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Vendedor líder</div>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Artilheiro líder</div>
           <div className="font-display text-lg truncate">{seller?.name ?? "—"}</div>
         </div>
         {seller && <span className="ml-auto font-display gradient-text-gold text-xl">{seller.points}</span>}
@@ -219,8 +219,8 @@ function Index() {
 
       {/* Rankings */}
       <section id="ranking" className="max-w-7xl mx-auto px-5 md:px-8 py-10 md:py-14 grid gap-6 md:grid-cols-2">
-        <RankTable title="Ranking das Franquias" icon="🏆" rows={franchises} label="Franquia" />
-        <RankTable title="Ranking dos Vendedores" icon="⚽" rows={sellers} label="Vendedor" />
+        <RankTable title="Seleções MRT" icon="🏆" rows={franchises} label="Seleção" />
+        <RankTable title="Artilheiros da Copa MRT" icon="⚽" rows={sellers} label="Artilheiro" />
       </section>
 
       {/* Footer */}
