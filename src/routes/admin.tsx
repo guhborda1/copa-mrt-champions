@@ -9,8 +9,9 @@ import {
   upsertSeller,
   deleteSeller,
   updatePrize,
+  updateEndDate,
 } from "@/lib/admin.functions";
-import { Trash2, Pencil, Plus, Shield, LogOut, Save } from "lucide-react";
+import { Trash2, Pencil, Plus, Shield, LogOut, Save, CalendarClock } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 export const Route = createFileRoute("/admin")({
@@ -126,33 +127,70 @@ function Editor({
   );
 }
 
-function PrizeEditor({ password }: { password: string }) {
+function toLocalInput(iso: string | null) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function CampaignEditor({ password }: { password: string }) {
   const [prize, setPrize] = useState("");
+  const [endDate, setEndDate] = useState("");
   const updatePrizeFn = useServerFn(updatePrize);
+  const updateEndDateFn = useServerFn(updateEndDate);
+
   useEffect(() => {
-    supabase.from("campaign_info").select("prize").eq("id", 1).maybeSingle()
-      .then(({ data }) => { if (data?.prize) setPrize(data.prize); });
+    supabase.from("campaign_info").select("prize,end_date").eq("id", 1).maybeSingle()
+      .then(({ data }) => {
+        if (data?.prize) setPrize(data.prize);
+        setEndDate(toLocalInput(data?.end_date ?? null));
+      });
   }, []);
+
   return (
     <form
-      className="card-premium rounded-2xl p-6 flex flex-col md:flex-row gap-2 items-stretch md:items-center"
+      className="card-premium rounded-2xl p-6 space-y-4"
       onSubmit={async (e) => {
         e.preventDefault();
         try {
-          await updatePrizeFn({ data: { password, prize } });
-          toast.success("Prêmio atualizado");
+          const iso = endDate ? new Date(endDate).toISOString() : null;
+          await Promise.all([
+            updatePrizeFn({ data: { password, prize } }),
+            updateEndDateFn({ data: { password, end_date: iso } }),
+          ]);
+          toast.success("Campanha atualizada");
         } catch (err: any) { toast.error(err.message ?? "Erro"); }
       }}
     >
-      <label className="text-xs uppercase tracking-widest text-muted-foreground md:w-40">
-        Prêmio da Campanha
-      </label>
-      <input
-        value={prize}
-        onChange={(e) => setPrize(e.target.value)}
-        className="flex-1 bg-input/60 border border-border rounded-md px-3 py-2 text-sm"
-      />
-      <button className="btn-gold rounded-md px-4 py-2 text-sm">Salvar</button>
+      <h2 className="font-display text-xl tracking-widest">Campanha</h2>
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <label className="text-xs uppercase tracking-widest text-muted-foreground">Prêmio</label>
+          <input
+            value={prize}
+            onChange={(e) => setPrize(e.target.value)}
+            className="mt-1 w-full bg-input/60 border border-border rounded-md px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label className="text-xs uppercase tracking-widest text-muted-foreground inline-flex items-center gap-1">
+            <CalendarClock className="h-3.5 w-3.5" /> Encerramento da Copa
+          </label>
+          <input
+            type="datetime-local"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="mt-1 w-full bg-input/60 border border-border rounded-md px-3 py-2 text-sm"
+          />
+          <p className="text-[10px] text-muted-foreground mt-1">
+            Define o contador regressivo da home. Deixe em branco para ocultar.
+          </p>
+        </div>
+      </div>
+      <div className="flex justify-end">
+        <button className="btn-gold rounded-md px-5 py-2 text-sm">Salvar campanha</button>
+      </div>
     </form>
   );
 }
