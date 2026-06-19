@@ -107,28 +107,50 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Estádio fixo de fundo + camadas para legibilidade */}
+      {/* Foto do estádio */}
       <div
         aria-hidden
-        className="fixed inset-0 -z-30 bg-cover bg-center bg-no-repeat"
+        className="fixed inset-0 -z-40 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${stadiumBg})` }}
       />
+      {/* Gramado + luzes do estádio (camada animada) */}
+      <div aria-hidden className="fixed inset-0 -z-30 stadium-lights pointer-events-none" />
+      {/* Escurecimento legível */}
       <div
         aria-hidden
         className="fixed inset-0 -z-20"
         style={{
           background:
-            "linear-gradient(180deg, oklch(0.16 0.08 152 / 0.42) 0%, oklch(0.14 0.08 152 / 0.52) 50%, oklch(0.18 0.10 150 / 0.62) 100%)",
+            "linear-gradient(180deg, oklch(0.14 0.08 152 / 0.55) 0%, oklch(0.12 0.07 152 / 0.62) 50%, oklch(0.18 0.10 150 / 0.72) 100%)",
         }}
       />
+      {/* Halo dourado no topo */}
       <div
         aria-hidden
         className="fixed inset-0 -z-10 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 45% at 50% 0%, oklch(0.88 0.18 95 / 40%) 0%, transparent 60%)",
+            "radial-gradient(ellipse 70% 45% at 50% 0%, oklch(0.88 0.18 95 / 35%) 0%, transparent 60%)",
         }}
       />
+      {/* Confetes verde e amarelo */}
+      <div aria-hidden className="confetti-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        {Array.from({ length: 36 }).map((_, i) => (
+          <span
+            key={i}
+            className={`confetti confetti-${i % 6}`}
+            style={{
+              left: `${(i * 97) % 100}%`,
+              animationDelay: `${(i * 0.37) % 8}s`,
+              animationDuration: `${7 + ((i * 13) % 9)}s`,
+              background: i % 2 === 0
+                ? "linear-gradient(135deg, oklch(0.92 0.18 100), oklch(0.78 0.20 88))"
+                : "linear-gradient(135deg, oklch(0.70 0.22 145), oklch(0.45 0.18 148))",
+              transform: `rotate(${(i * 37) % 360}deg)`,
+            }}
+          />
+        ))}
+      </div>
       <Outlet />
     </QueryClientProvider>
   );

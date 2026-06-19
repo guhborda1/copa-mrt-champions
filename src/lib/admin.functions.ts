@@ -92,3 +92,21 @@ export const updatePrize = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+export const updateEndDate = createServerFn({ method: "POST" })
+  .inputValidator((d) =>
+    z.object({
+      password: z.string(),
+      end_date: z.string().nullable(),
+    }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    checkPassword(data.password);
+    const admin = await getAdmin();
+    const { error } = await admin
+      .from("campaign_info")
+      .update({ end_date: data.end_date })
+      .eq("id", 1);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
