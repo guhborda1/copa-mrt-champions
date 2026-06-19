@@ -16,14 +16,17 @@ export type Database = {
     Tables: {
       campaign_info: {
         Row: {
+          end_date: string | null
           id: number
           prize: string
         }
         Insert: {
+          end_date?: string | null
           id?: number
           prize?: string
         }
         Update: {
+          end_date?: string | null
           id?: number
           prize?: string
         }

@@ -1,0 +1,1 @@
+ALTER TABLE public.campaign_info ADD COLUMN IF NOT EXISTS end_date TIMESTAMPTZ; UPDATE public.campaign_info SET end_date = (now() + interval '45 days') WHERE id = 1 AND end_date IS NULL;
