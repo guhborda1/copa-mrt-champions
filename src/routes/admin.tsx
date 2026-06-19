@@ -278,7 +278,7 @@ function Admin() {
       </header>
 
       <main className="max-w-7xl mx-auto px-5 md:px-8 py-8 space-y-6">
-        <PrizeEditor password={password} />
+        <CampaignEditor password={password} />
         <div className="grid gap-6 md:grid-cols-2">
           <Editor
             label="🏆 Seleções MRT"
