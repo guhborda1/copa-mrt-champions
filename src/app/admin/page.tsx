@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import {
   verifyAdminPassword,
   upsertFranchise,
@@ -19,21 +18,13 @@ type Row = { id: string; name: string; points: number };
 function useRows(table: 'franchises' | 'sellers') {
   const [rows, setRows] = useState<Row[]>([]);
   const reload = async () => {
-    const { data } = await supabase
-      .from(table)
-      .select('id,name,points')
-      .order('points', { ascending: false });
-    if (data) setRows(data as Row[]);
+    const res = await fetch(`/api/ranking?table=${table}`);
+    if (res.ok) setRows(await res.json());
   };
   useEffect(() => {
     reload();
-    const ch = supabase
-      .channel(`adm-${table}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table }, () => reload())
-      .subscribe();
-    return () => {
-      supabase.removeChannel(ch);
-    };
+    const interval = setInterval(reload, 5000);
+    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [table]);
   return rows;
@@ -156,12 +147,9 @@ function CampaignEditor({ password }: { password: string }) {
   const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
-    supabase
-      .from('campaign_info')
-      .select('prize,end_date')
-      .eq('id', 1)
-      .maybeSingle()
-      .then(({ data }) => {
+    fetch('/api/campaign')
+      .then((r) => r.json())
+      .then((data) => {
         if (data?.prize) setPrize(data.prize);
         setEndDate(toLocalInput(data?.end_date ?? null));
       });

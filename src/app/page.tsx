@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import trophyImg from '@/assets/trophy.png';
 import {
   Trophy,
@@ -32,20 +31,14 @@ function useRanking(table: 'franchises' | 'sellers') {
   useEffect(() => {
     let active = true;
     const load = async () => {
-      const { data } = await supabase
-        .from(table)
-        .select('id,name,points')
-        .order('points', { ascending: false });
-      if (active && data) setRows(data as Row[]);
+      const res = await fetch(`/api/ranking?table=${table}`);
+      if (res.ok && active) setRows(await res.json());
     };
     load();
-    const channel = supabase
-      .channel(`rt-${table}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table }, () => load())
-      .subscribe();
+    const interval = setInterval(load, 5000);
     return () => {
       active = false;
-      supabase.removeChannel(channel);
+      clearInterval(interval);
     };
   }, [table]);
   return rows;
@@ -57,21 +50,16 @@ function useCampaign() {
     end_date: null,
   });
   useEffect(() => {
+    let active = true;
     const load = async () => {
-      const { data } = await supabase
-        .from('campaign_info')
-        .select('prize,end_date')
-        .eq('id', 1)
-        .maybeSingle();
-      if (data) setInfo({ prize: data.prize ?? 'Troféu Copa MRT 2026', end_date: data.end_date });
+      const res = await fetch('/api/campaign');
+      if (res.ok && active) setInfo(await res.json());
     };
     load();
-    const ch = supabase
-      .channel('rt-campaign')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'campaign_info' }, () => load())
-      .subscribe();
+    const interval = setInterval(load, 10000);
     return () => {
-      supabase.removeChannel(ch);
+      active = false;
+      clearInterval(interval);
     };
   }, []);
   return info;
@@ -401,7 +389,25 @@ export default function Index() {
 
   return (
     <div className="min-h-screen">
-      
+      <header className="max-w-7xl mx-auto px-5 md:px-8 pt-6 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <img
+            src="/logo-mrt.png"
+            alt="Logo MRT"
+            width={40}
+            height={40}
+            className="h-9 w-9 md:h-10 md:w-10 rounded-full object-contain bg-white/90 shadow-sm"
+          />
+          <Sparkles className="h-5 w-5" style={{ color: 'var(--gold)' }} />
+          <span className="font-display tracking-widest text-sm">COPA MRT 2026</span>
+        </div>
+        <Link
+          href="/admin"
+          className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition"
+        >
+          Admin
+        </Link>
+      </header>
 
       <section className="relative max-w-7xl mx-auto px-5 md:px-8 pt-8 md:pt-14 pb-10 text-center">
         <div
@@ -421,8 +427,6 @@ export default function Index() {
             <img
               src={(trophyImg as { src: string }).src}
               alt="Troféu Copa MRT 2026"
-              width={360}
-              height={360}
               className="h-60 sm:h-72 md:h-[22rem] lg:h-[26rem] w-auto drop-shadow-[0_40px_80px_rgba(212,175,55,0.45)] trophy-glow"
             />
           </div>

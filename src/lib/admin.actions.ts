@@ -1,15 +1,5 @@
 'use server';
-import { createClient } from '@supabase/supabase-js';
-import type { Database } from '@/integrations/supabase/types';
-
-function getAdminClient() {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) throw new Error('Configuração do Supabase ausente no servidor');
-  return createClient<Database>(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-}
+import { prisma } from '@/lib/prisma';
 
 function checkPassword(password: string) {
   const expected = process.env.ADMIN_PASSWORD;
@@ -28,19 +18,16 @@ export async function upsertFranchise(
   points: number,
 ): Promise<void> {
   checkPassword(password);
-  const admin = getAdminClient();
-  const q = id
-    ? admin.from('franchises').update({ name, points }).eq('id', id)
-    : admin.from('franchises').insert({ name, points });
-  const { error } = await q;
-  if (error) throw new Error(error.message);
+  if (id) {
+    await prisma.franchise.update({ where: { id }, data: { name, points } });
+  } else {
+    await prisma.franchise.create({ data: { name, points } });
+  }
 }
 
 export async function deleteFranchise(password: string, id: string): Promise<void> {
   checkPassword(password);
-  const admin = getAdminClient();
-  const { error } = await admin.from('franchises').delete().eq('id', id);
-  if (error) throw new Error(error.message);
+  await prisma.franchise.delete({ where: { id } });
 }
 
 export async function upsertSeller(
@@ -50,31 +37,32 @@ export async function upsertSeller(
   points: number,
 ): Promise<void> {
   checkPassword(password);
-  const admin = getAdminClient();
-  const q = id
-    ? admin.from('sellers').update({ name, points }).eq('id', id)
-    : admin.from('sellers').insert({ name, points });
-  const { error } = await q;
-  if (error) throw new Error(error.message);
+  if (id) {
+    await prisma.seller.update({ where: { id }, data: { name, points } });
+  } else {
+    await prisma.seller.create({ data: { name, points } });
+  }
 }
 
 export async function deleteSeller(password: string, id: string): Promise<void> {
   checkPassword(password);
-  const admin = getAdminClient();
-  const { error } = await admin.from('sellers').delete().eq('id', id);
-  if (error) throw new Error(error.message);
+  await prisma.seller.delete({ where: { id } });
 }
 
 export async function updatePrize(password: string, prize: string): Promise<void> {
   checkPassword(password);
-  const admin = getAdminClient();
-  const { error } = await admin.from('campaign_info').update({ prize }).eq('id', 1);
-  if (error) throw new Error(error.message);
+  await prisma.campaignInfo.upsert({
+    where: { id: 1 },
+    update: { prize },
+    create: { id: 1, prize },
+  });
 }
 
 export async function updateEndDate(password: string, end_date: string | null): Promise<void> {
   checkPassword(password);
-  const admin = getAdminClient();
-  const { error } = await admin.from('campaign_info').update({ end_date }).eq('id', 1);
-  if (error) throw new Error(error.message);
+  await prisma.campaignInfo.upsert({
+    where: { id: 1 },
+    update: { end_date },
+    create: { id: 1, prize: 'Troféu Copa MRT 2026', end_date },
+  });
 }
