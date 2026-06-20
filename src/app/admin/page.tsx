@@ -14,10 +14,6 @@ import {
 import { Trash2, Pencil, Plus, Shield, LogOut, Save, CalendarClock } from 'lucide-react';
 import { toast, Toaster } from 'sonner';
 
-export const metadata = {
-  title: 'Admin — Copa MRT 2026',
-};
-
 type Row = { id: string; name: string; points: number };
 
 function useRows(table: 'franchises' | 'sellers') {
